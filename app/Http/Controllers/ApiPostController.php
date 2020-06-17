@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\User;
 use DB;
+use Illuminate\Support\Str;
+
 class ApiPostController extends Controller
 {
     /**
@@ -55,6 +57,7 @@ class ApiPostController extends Controller
     public function store(Request $request)
     {
         $atribute = $request ->all();
+        $atribute['slug'] = Str::slug($atribute['title']);
         // $fileName = time().'.'.$request->file->extension();
         // $request->file->move(public_path('uploads'), $fileName);  
         // $atribute['image'] = 'storage/app/public/uploads/'.$fileName;
@@ -94,7 +97,10 @@ class ApiPostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $atribute = $request ->all();
+        $post = Post::find($id);
+        $post->update($atribute);
+        return response()->json($post, 200);
     }
 
     /**
@@ -105,6 +111,8 @@ class ApiPostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::find($id);
+        $post->delete();
+        return response()->json($post, 200);
     }
 }
