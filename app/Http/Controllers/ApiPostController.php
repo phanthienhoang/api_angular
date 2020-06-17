@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
-
+use App\User;
+use DB;
 class ApiPostController extends Controller
 {
     /**
@@ -14,8 +15,25 @@ class ApiPostController extends Controller
      */
     public function index()
     {
-        $data = Post::all();
-        return response()->json($data);
+        // $datas = Post::all();
+
+        // $datas = array_map(function ($item) {
+        //     return ['name' => $item->user->name];
+        // }, $datas->toArray());
+
+        // foreach($datas as $data){
+        //     // $data['user_name'] = User::find($data['user_id'])->name ;
+        //     $data['user_name'] = $data->user->name ;
+
+        //     // dd($data->user);
+        // }
+
+        $datas = DB::table('posts')
+            ->join('users', 'users.id', '=', 'posts.user_id')
+            ->select('posts.*', 'users.email')
+            ->get();
+
+        return response()->json($datas);
     }
 
     /**
