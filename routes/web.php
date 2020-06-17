@@ -22,3 +22,10 @@ Route::get('get', 'TaskController@index');
 Route::get('get/{id}', 'TaskController@detail');
 
 Route::delete('delete/{id}', 'TaskController@destroy');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
