@@ -58,7 +58,9 @@ class ApiPostController extends Controller
     {
         $atribute = $request ->all();
         $atribute['slug'] = Str::slug($atribute['title']);
-        $fileName = time().'.'.$request->file->extension();
+
+        $file = $request->inputFile;
+        $fileName = time().$request->file->getClientOriginalExtension();
         $request->file->move(public_path('uploads'), $fileName);  
         $atribute['image'] = 'storage/app/public/uploads/'.$fileName;
         $data = Post::create($atribute);
